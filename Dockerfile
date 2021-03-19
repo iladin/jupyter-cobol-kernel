@@ -10,8 +10,8 @@ WORKDIR /tmp
 
 COPY ./ jupyter_cobol_kernel/
 
-RUN pip install --no-cache-dir -e jupyter_cobol_kernel/ | tee piplog.txt
-RUN cd jupyter_cobol_kernel && install_cobol_kernel --user | tee installlog.txt
+RUN pip3 install --no-cache-dir -e jupyter_cobol_kernel/ | tee piplog.txt
+RUN  cd jupyter_cobol_kernel/jupyter_cobol_kernel && python3 install_cobol_kernel --user | tee installlog.txt
 
 WORKDIR /home/$NB_USER/
 

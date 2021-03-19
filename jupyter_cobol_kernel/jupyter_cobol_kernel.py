@@ -16,6 +16,8 @@ class RealTimeSubprocess(subprocess.Popen):
     A subprocess that allows to read its stdout and stderr in real time
     """
 
+    inputRequest = "<inputRequest>"
+
     def __init__(self, cmd, write_to_stdout, write_to_stderr):
         """
         :param cmd: the command to execute
@@ -24,18 +26,18 @@ class RealTimeSubprocess(subprocess.Popen):
         """
         self._write_to_stdout = write_to_stdout
         self._write_to_stderr = write_to_stderr
+        self._read_from_stdin = read_from_stdin
 
-        super().__init__(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0)
+
+        super().__init__(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0)
 
         self._stdout_queue = Queue()
-        self._stdout_thread = Thread(target=RealTimeSubprocess._enqueue_output, args=(
-            self.stdout, self._stdout_queue))
+        self._stdout_thread = Thread(target=RealTimeSubprocess._enqueue_output, args=(self.stdout, self._stdout_queue))
         self._stdout_thread.daemon = True
         self._stdout_thread.start()
 
         self._stderr_queue = Queue()
-        self._stderr_thread = Thread(target=RealTimeSubprocess._enqueue_output, args=(
-            self.stderr, self._stderr_queue))
+        self._stderr_thread = Thread(target=RealTimeSubprocess._enqueue_output, args=(self.stderr, self._stderr_queue))
         self._stderr_thread.daemon = True
         self._stderr_thread.start()
 

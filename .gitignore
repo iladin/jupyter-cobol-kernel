@@ -5,3 +5,5 @@ tempCodeRunnerFile.python
 gnucobol-3.1*
 *.pyc
 *.egg-info
+piplog.txt
+.gitignore

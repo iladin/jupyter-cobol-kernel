@@ -1,11 +1,12 @@
-FROM jupyter/minimal-notebook
-
+#FROM jupyter/minimal-notebook
+FROM ubuntu:18.04
 USER root
 
-ARG version=gnucobol-3.1
+ARG gnucobol_version=3.1.2
+ARG version=gnucobol-${gnucobol_version}
 
-# Install vim and ssh
-RUN apt-get update && apt-get install --no-install-recommends -y vim openssh-client build-essential wget gcc make libdb-dev libncurses5-dev libgmp-dev autoconf gpg && rm -rf /var/lib/apt/lists/*
+#hadolint ignore=DL3008
+RUN apt-get update && apt-get install --no-install-recommends -y vim openssh-client build-essential ca-certificates wget gcc make libdb-dev libncurses5-dev libgmp-dev autoconf gpg && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
 
@@ -25,8 +26,9 @@ RUN cobc --version
 
 COPY ./ jupyter_cobol_kernel/
 
-RUN pip3 install --no-cache-dir -e jupyter_cobol_kernel/ | tee piplog.txt
-RUN cd jupyter_cobol_kernel/jupyter_cobol_kernel && python3 install_cobol_kernel --user | tee installlog.txt
+RUN pip3 install --no-cache-dir -e jupyter_cobol_kernel/
+WORKDIR /tmp/jupyter_cobol_kernel
+RUN python3 install_cobol_kernel --user
 
 WORKDIR /home/$NB_USER/
 

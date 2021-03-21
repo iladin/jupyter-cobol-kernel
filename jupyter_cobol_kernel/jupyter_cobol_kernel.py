@@ -3,8 +3,6 @@ from ipykernel.kernelbase import Kernel
 from queue import Queue
 from threading import Thread
 
-from ipykernel.kernelbase import Kernel
-import re
 import subprocess
 import tempfile
 import os
@@ -73,7 +71,7 @@ class RealTimeSubprocess(subprocess.Popen):
 
 
 class COBOLKernel(Kernel):
-    implementation = 'jupyter_COBOL_kernel'
+    implementation = 'jupyter_cobol_kernel'
     implementation_version = '0.1'
     language = 'COBOL'
 

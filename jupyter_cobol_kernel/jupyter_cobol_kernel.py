@@ -74,7 +74,8 @@ class COBOLKernel(Kernel):
     implementation = 'jupyter_cobol_kernel'
     implementation_version = '0.1'
     language = 'COBOL'
-
+    banner = "COBOL kernel.\n" \
+             "Uses gnucobol, and creates source code files and executables in temporary folder.\n"
     def __init__(self, *args, **kwargs):
         super(COBOLKernel, self).__init__(*args, **kwargs)
         self.files = []
@@ -124,6 +125,37 @@ class COBOLKernel(Kernel):
         args = [ 'cobc', source_filename] + cobflags + ['-o', binary_filename] + ldflags
         return self.create_jupyter_subprocess(args)
 
+
+    def _filter_magics(self, code):
+
+        magics = ({'cobflags': [],
+                  'ldflags': [],
+                  'args': []})
+
+        actualCode = ''
+
+        for line in code.splitlines():
+            if line.startswith('//%'):
+                key, value = line[3:].split(":", 2)
+                key = key.strip().lower()
+
+                if key in ['ldflags', 'cobflags']:
+                    for flag in value.split():
+                        magics[key] += [flag]
+                elif key == "args":
+                    # Split arguments respecting quotes
+                    for argument in re.findall(r'(?:[^\s,"]|"(?:\\.|[^"])*")+', value):
+                        magics['args'] += [argument.strip('"')]
+
+                # always add empty line, so line numbers don't change
+                actualCode += '\n'
+
+            # keep lines which did not contain magics
+            else:
+                actualCode += line + '\n'
+
+        return magics, actualCode
+
     def do_execute(self, code, silent, store_history=True,
                    user_expressions=None, allow_stdin=False):
 
@@ -133,7 +165,7 @@ class COBOLKernel(Kernel):
             source_file.write(code)
             source_file.flush()
             with self.new_temp_file(suffix='.out') as binary_file:
-                p = self.compile_with_cobc(source_file.name, binary_file.name, magics['cobflags'], magics['ldflags'])
+                p = self.compile_with_cobc(source_file.name, binary_file.name, magics[0], magics[1])
                 while p.poll() is None:
                     p.write_contents()
                 p.write_contents()

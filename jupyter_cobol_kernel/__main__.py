@@ -1,3 +1,3 @@
 from ipykernel.kernelapp import IPKernelApp
-from .juptyer_cobol_kernel import COBOLKernel
-IPKernelApp.launch_instance(kernel_class=COBOLKernel)
+from . import jupyter_cobol_kernel
+IPKernelApp.launch_instance(kernel_class=jupyter_cobol_kernel.COBOLKernel)

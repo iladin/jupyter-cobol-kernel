@@ -7,3 +7,5 @@ gnucobol-3.1*
 *.egg-info
 piplog.txt
 .gitignore
+Untitled*
+super-linter.log

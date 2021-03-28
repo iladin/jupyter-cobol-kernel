@@ -1,0 +1,11 @@
+tempCodeRunnerFile.python
+.vscode/configurationCache.log
+.vscode/dryrun.log
+.vscode/targets.log
+gnucobol-3.1*
+*.pyc
+*.egg-info
+piplog.txt
+.gitignore
+Untitled*
+super-linter.log

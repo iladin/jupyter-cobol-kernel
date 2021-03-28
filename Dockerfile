@@ -1,5 +1,5 @@
-#FROM jupyter/minimal-notebook
-FROM ubuntu:18.04
+FROM jupyter/minimal-notebook
+#FROM ubuntu:18.04
 USER root
 
 ARG gnucobol_version=3.1.2

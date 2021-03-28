@@ -9,10 +9,10 @@ jobs:
   docker:
     runs-on: ubuntu-18.04
     strategy:
-      matrix:
-        gnucobol_version: [2.2,3.1,3.1.1,3.1.2]
-        include:
-          - version: gnu-cobol-1.1
+#FFMATRIX      matrix: 
+#FFMATRIX        gnucobol_version: [2.2,3.1,3.1.1,3.1.2]
+#FFMATRIX        include:
+#FFMATRIX          - version: gnu-cobol-1.1
     steps:
       -
         name: Set up QEMU
@@ -24,5 +24,5 @@ jobs:
         name: Build and push gnucobol version ${{ matrix.gnucobol_version }}
         id: docker_build
         uses: docker/build-push-action@v2
-        with:
-          gnucobol_version: ${{ matrix.gnucobol_version }}
+#FFMATRIX        with:
+#FFMATRIX          gnucobol_version: ${{ matrix.gnucobol_version }}

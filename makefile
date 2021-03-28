@@ -21,3 +21,4 @@ lint: ; docker run -e RUN_LOCAL=true -v $(shell pwd):/tmp/lint github/super-lint
 install: 
 	pip3 $@ --no-cache-dir -e .
 	cd jupyter_cobol_kernel && python3 install_cobol_kernel --user
+clean: ; rm -f Untitled*
